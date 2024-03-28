@@ -91,7 +91,7 @@ else()
     message(STATUS "libremidi: Using boost::small_vector for libremidi::message")
   elseif(Boost_INCLUDE_DIR)
     target_compile_definitions(libremidi ${_public} LIBREMIDI_USE_BOOST)
-    target_include_directories(libremidi ${_public} $<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>)
+    target_include_directories(libremidi SYSTEM ${_public} $<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>)
     message(STATUS "libremidi: Using boost::small_vector for libremidi::message")
   else()
     message(STATUS "libremidi: Using std::vector for libremidi::message")
@@ -113,10 +113,16 @@ if(CMAKE_THREAD_LIBS_INIT)
   target_link_libraries(libremidi ${_public} ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
-target_include_directories(libremidi ${_public}
+target_include_directories(libremidi SYSTEM ${_public}
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
+if(NOT LIBREMIDI_HEADER_ONLY)
+	target_include_directories(libremidi ${_private} # Makes any above set warnings apply normally, without leaking out to clients
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include>
+	)
+endif()
 
 ### Backends ###
 if(EMSCRIPTEN)

@@ -12,7 +12,7 @@ if(WEAKJACK_PATH AND JACK_PATH)
   set(LIBREMIDI_HAS_JACK 1)
   set(LIBREMIDI_HAS_WEAKJACK 1)
 
-  target_include_directories(libremidi ${_public} $<BUILD_INTERFACE:${WEAKJACK_PATH}> $<BUILD_INTERFACE:${JACK_PATH}>)
+  target_include_directories(libremidi SYSTEM ${_public} $<BUILD_INTERFACE:${WEAKJACK_PATH}> $<BUILD_INTERFACE:${JACK_PATH}>)
   target_link_libraries(libremidi ${_public} ${CMAKE_DL_LIBS})
 elseif(JACK_PATH)
   find_library(JACK_LIBRARIES jack)
@@ -21,7 +21,7 @@ elseif(JACK_PATH)
     set(LIBREMIDI_HAS_JACK 1)
 
     target_link_libraries(libremidi ${_public} ${JACK_LIBRARIES})
-    target_include_directories(libremidi ${_public} $<BUILD_INTERFACE:${JACK_PATH}>)
+    target_include_directories(libremidi SYSTEM ${_public} $<BUILD_INTERFACE:${JACK_PATH}>)
   endif()
 endif()
 

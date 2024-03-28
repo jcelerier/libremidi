@@ -8,7 +8,7 @@ if(NOT LIBREMIDI_NO_WINMIDI)
     DESTINATION "${CMAKE_BINARY_DIR}/cppwinrt/winrt/"
   )
 
-  target_include_directories(libremidi ${_public}
+  target_include_directories(libremidi SYSTEM ${_public}
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/cppwinrt>
   )
   target_compile_definitions(libremidi ${_public} LIBREMIDI_WINMIDI)
@@ -49,7 +49,7 @@ if(CPPWINRT_PATH)
   message(STATUS "libremidi: using WinUWP")
   set(LIBREMIDI_HAS_WINUWP 1)
 
-  target_include_directories(libremidi ${_public} "${CPPWINRT_PATH}")
+  target_include_directories(libremidi SYSTEM ${_public} "${CPPWINRT_PATH}")
   target_compile_definitions(libremidi ${_public} LIBREMIDI_WINUWP)
   target_link_libraries(libremidi INTERFACE RuntimeObject)
   # We don't need /ZW option here (support for C++/CX)' as we use C++/WinRT
